@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FortBot — Security-First AI Agent for WhatsApp</title>
+  <meta name="description" content="Personal AI assistant for WhatsApp with security as architecture. 223 tests, 7 defense layers, zero trust by default.">
+  <meta property="og:title" content="FortBot — Security-First AI Agent">
+  <meta property="og:description" content="Built as an answer to OpenClaw's architecture. Security isn't a feature — it's the foundation.">
+  <meta property="og:type" content="website">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    :root {
+      --bg: #f6f5f1;
+      --bg2: #eeedea;
+      --bg3: #e3e2dd;
+      --bg-card: #fbfaf8;
+      --text: #1f2117;
+      --text2: #555749;
+      --text3: #919383;
+      --accent: #4a6741;
+      --accent-deep: #3a5233;
+      --accent-soft: rgba(74,103,65,0.06);
+      --ok: #4a6741;
+      --ok-bg: rgba(74,103,65,0.07);
+      --danger: #b5403a;
+      --danger-bg: rgba(181,64,58,0.07);
+      --amber: #99772a;
+      --amber-bg: rgba(153,119,42,0.08);
+      --border: rgba(31,33,23,0.07);
+      --border-hover: rgba(74,103,65,0.2);
+      --shadow: 0 1px 3px rgba(31,33,23,0.03), 0 4px 14px rgba(31,33,23,0.025);
+      --shadow-hover: 0 2px 6px rgba(74,103,65,0.06), 0 8px 22px rgba(31,33,23,0.04);
+      --radius: 10px;
+      --font-mono: 'Fira Code', monospace;
+      --hero-size: clamp(2.5rem, 5.2vw, 3.8rem);
+      --section-size: clamp(1.5rem, 3.2vw, 2.1rem);
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Outfit', sans-serif;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    a { color: var(--accent); text-decoration: none; transition: color 0.2s; }
+    a:hover { color: var(--accent-deep); }
+
+    .container { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+    section, header, footer { position: relative; z-index: 2; }
+
+    /* ── NAV ── */
+    .nav-wrap {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(246,245,241,0.85);
+      backdrop-filter: blur(20px) saturate(1.2);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-inner {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 14px 24px; max-width: 1080px; margin: 0 auto;
+    }
+    .nav-logo {
+      font-family: var(--font-mono); font-weight: 700; font-size: 0.95rem;
+      color: var(--text);
+      display: flex; align-items: center; gap: 9px;
+    }
+    .nav-logo .icon {
+      width: 30px; height: 30px;
+      background: var(--accent);
+      border-radius: calc(var(--radius) * 0.55);
+      display: flex; align-items: center; justify-content: center;
+      color: #fff; font-size: 13px; font-weight: 700;
+    }
+    .nav-links { display: flex; gap: 28px; list-style: none; }
+    .nav-links a { color: var(--text2); font-size: 0.82rem; font-weight: 500; }
+    .nav-links a:hover { color: var(--accent); }
+    .nav-cta {
+      font-family: var(--font-mono); font-size: 0.73rem; font-weight: 600;
+      padding: 8px 18px; background: var(--accent); border: none;
+      color: #fff; border-radius: var(--radius);
+      cursor: pointer; transition: opacity 0.3s; text-decoration: none;
+    }
+    .nav-cta:hover { opacity: 0.88; color: #fff; }
+
+    /* ── HERO ── */
+    .hero { padding: 160px 0 100px; position: relative; }
+    .hero-bg-deco {
+      position: absolute; inset: -120px 0 0 0;
+      background:
+        radial-gradient(ellipse 650px 400px at 20% 20%, rgba(74,103,65,0.04), transparent 70%),
+        radial-gradient(ellipse 400px 300px at 80% 50%, rgba(153,119,42,0.025), transparent 70%);
+      pointer-events: none;
+    }
+    .hero-tag {
+      font-family: var(--font-mono); font-size: 0.7rem; font-weight: 600;
+      color: var(--accent); text-transform: uppercase; letter-spacing: 0.12em;
+      margin-bottom: 20px;
+      display: flex; align-items: center; gap: 10px;
+      opacity: 0; animation: fadeUp 0.6s 0.15s forwards;
+    }
+    .hero-tag::before {
+      content: ''; width: 24px; height: 2px;
+      background: var(--accent); border-radius: 1px;
+    }
+    .hero h1 {
+      font-size: var(--hero-size); font-weight: 700;
+      line-height: 1.08; letter-spacing: -0.035em;
+      margin-bottom: 22px; color: var(--text);
+      opacity: 0; animation: fadeUp 0.6s 0.3s forwards;
+    }
+    .hero h1 .highlight { color: var(--accent); }
+    .hero-sub {
+      font-size: 1.08rem; color: var(--text2);
+      max-width: 520px; line-height: 1.7; margin-bottom: 40px;
+      opacity: 0; animation: fadeUp 0.6s 0.45s forwards;
+    }
+    .hero-stats {
+      display: flex; gap: 40px;
+      opacity: 0; animation: fadeUp 0.6s 0.6s forwards;
+    }
+    .stat-value {
+      font-family: var(--font-mono); font-size: 1.6rem; font-weight: 700;
+      color: var(--accent); line-height: 1.2;
+    }
+    .stat-label {
+      font-family: var(--font-mono); font-size: 0.65rem;
+      color: var(--text3); text-transform: uppercase;
+      letter-spacing: 0.1em; margin-top: 2px;
+    }
+
+    /* ── SECTIONS ── */
+    .section-label {
+      font-family: var(--font-mono); font-size: 0.66rem; font-weight: 600;
+      color: var(--accent); text-transform: uppercase; letter-spacing: 0.14em;
+      margin-bottom: 10px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .section-label-line {
+      width: 20px; height: 2px; border-radius: 1px;
+      background: var(--accent);
+    }
+    .section-title {
+      font-size: var(--section-size); font-weight: 700;
+      letter-spacing: -0.025em; margin-bottom: 12px;
+      line-height: 1.2; color: var(--text);
+    }
+    .section-desc {
+      color: var(--text2); max-width: 540px;
+      margin-bottom: 48px; font-size: 0.98rem; line-height: 1.65;
+    }
+    .sec { padding: 80px 0; }
+
+    /* ── ARCH ── */
+    .arch-compare { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    .arch-box {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 26px;
+      position: relative; overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+    .arch-bar {
+      position: absolute; top: 0; left: 0; right: 0; height: 2.5px;
+    }
+    .arch-bad-bar { background: var(--danger); }
+    .arch-good-bar { background: var(--accent); }
+    .arch-label {
+      font-family: var(--font-mono); font-size: 0.66rem; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.1em;
+      margin-bottom: 16px; display: flex; align-items: center; gap: 6px;
+    }
+    .arch-box.bad .arch-label { color: var(--danger); }
+    .arch-box.good .arch-label { color: var(--accent); }
+    .arch-code {
+      font-family: var(--font-mono); font-size: 0.74rem;
+      line-height: 1.85; color: var(--text2); white-space: pre-line;
+    }
+    .arch-code .hl { color: var(--accent); font-weight: 600; }
+    .arch-code .warn { color: var(--danger); font-weight: 600; }
+    .arch-code .dim { color: var(--text3); }
+    .arch-code .note { color: var(--amber); font-weight: 500; }
+
+    /* ── LAYERS ── */
+    .layers-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 12px;
+    }
+    .layer-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 24px;
+      box-shadow: var(--shadow); transition: all 0.3s;
+      position: relative; overflow: hidden;
+    }
+    .layer-card:hover {
+      border-color: var(--border-hover);
+      box-shadow: var(--shadow-hover);
+      transform: translateY(-2px);
+    }
+    .layer-card::after {
+      content: ''; position: absolute; top: 0; left: 0;
+      width: 3px; height: 100%; background: var(--accent);
+      opacity: 0; transition: opacity 0.3s;
+    }
+    .layer-card:hover::after { opacity: 1; }
+    .layer-num {
+      font-family: var(--font-mono); font-size: 0.6rem; font-weight: 600;
+      color: var(--text3); text-transform: uppercase;
+      letter-spacing: 0.12em; margin-bottom: 8px;
+    }
+    .layer-name { font-size: 1rem; font-weight: 700; margin-bottom: 6px; color: var(--text); }
+    .layer-desc { font-size: 0.86rem; color: var(--text2); line-height: 1.55; }
+
+    /* ── CVE ── */
+    .cve-wrap {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius); overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+    .cve-table { width: 100%; border-collapse: collapse; font-size: 0.84rem; }
+    .cve-table thead { background: var(--bg2); }
+    .cve-table th {
+      font-family: var(--font-mono); font-size: 0.65rem; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.08em;
+      color: var(--text3); text-align: left;
+      padding: 13px 20px; border-bottom: 1px solid var(--border);
+    }
+    .cve-table td { padding: 11px 20px; border-bottom: 1px solid var(--border); color: var(--text2); }
+    .cve-table tr:last-child td { border-bottom: none; }
+    .vuln-name { font-family: var(--font-mono); font-size: 0.78rem; color: var(--text); font-weight: 500; }
+    .badge {
+      font-family: var(--font-mono); font-size: 0.64rem; font-weight: 600;
+      padding: 3px 9px; border-radius: calc(var(--radius) * 0.45);
+      text-transform: uppercase; letter-spacing: 0.03em;
+      display: inline-block;
+    }
+    .badge-ok { background: var(--ok-bg); color: var(--ok); }
+    .badge-danger { background: var(--danger-bg); color: var(--danger); }
+    .badge-warn { background: var(--amber-bg); color: var(--amber); }
+
+    /* ── FEATURES ── */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(225px, 1fr));
+      gap: 12px;
+    }
+    .feature-card {
+      padding: 22px; background: var(--bg-card);
+      border: 1px solid var(--border); border-radius: var(--radius);
+      box-shadow: var(--shadow); transition: all 0.3s;
+    }
+    .feature-card:hover { border-color: var(--border-hover); box-shadow: var(--shadow-hover); }
+    .feature-icon { font-size: 1.25rem; margin-bottom: 10px; }
+    .feature-name { font-weight: 700; font-size: 0.9rem; margin-bottom: 5px; color: var(--text); }
+    .feature-desc { font-size: 0.82rem; color: var(--text2); line-height: 1.5; }
+
+    /* ── TERMINAL ── */
+    .terminal {
+      border-radius: var(--radius); overflow: hidden; max-width: 660px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06), 0 12px 36px rgba(0,0,0,0.08);
+    }
+    .terminal-bar {
+      background: #1e1e2e; padding: 11px 16px;
+      display: flex; align-items: center; gap: 7px;
+    }
+    .terminal-dot { width: 10px; height: 10px; border-radius: 50%; }
+    .terminal-dot:nth-child(1) { background: #ff5f57; }
+    .terminal-dot:nth-child(2) { background: #febc2e; }
+    .terminal-dot:nth-child(3) { background: #28c840; }
+    .terminal-title { font-family: var(--font-mono); font-size: 0.68rem; color: #666; margin-left: 6px; }
+    .terminal-body {
+      padding: 20px; font-family: var(--font-mono);
+      font-size: 0.78rem; line-height: 1.95;
+      background: #141420; color: #a8a8c0; overflow-x: auto;
+    }
+    .terminal-body .prompt { color: #38bd7e; }
+    .terminal-body .comment { color: #555568; font-style: italic; }
+    .terminal-body .cmd { color: #d8d8e8; }
+
+    /* ── FOOTER ── */
+    footer { padding: 40px 0 24px; border-top: 1px solid var(--border); }
+    .footer-inner {
+      display: flex; justify-content: space-between;
+      align-items: center; flex-wrap: wrap; gap: 16px;
+    }
+    .footer-quote {
+      font-size: 0.82rem; color: var(--text3); font-style: italic;
+      max-width: 480px; line-height: 1.5;
+    }
+    .footer-links { display: flex; gap: 20px; }
+    .footer-links a {
+      font-family: var(--font-mono); font-size: 0.7rem; font-weight: 600;
+      color: var(--text3); text-transform: uppercase; letter-spacing: 0.06em;
+    }
+    .footer-links a:hover { color: var(--accent); }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .reveal {
+      opacity: 0; transform: translateY(24px);
+      transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .hero { padding: 130px 0 70px; }
+      .hero-stats { flex-wrap: wrap; gap: 22px; }
+      .arch-compare { grid-template-columns: 1fr; }
+      .cve-wrap { overflow-x: auto; }
+      .cve-table { min-width: 560px; }
+      .footer-inner { flex-direction: column; text-align: center; }
+    }
+    @media (max-width: 480px) {
+      .hero h1 { font-size: 2rem; }
+      .stat-value { font-size: 1.3rem; }
+      .layers-grid, .features-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <header class="nav-wrap">
+    <div class="nav-inner">
+      <div class="nav-logo"><div class="icon">F</div> FortBot</div>
+      <ul class="nav-links">
+        <li><a href="#architecture">Architecture</a></li>
+        <li><a href="#defense">Defense</a></li>
+        <li><a href="#vs-openclaw">vs OpenClaw</a></li>
+        <li><a href="#quickstart">Quick Start</a></li>
+      </ul>
+      <a href="https://github.com/JuampyParolo/fortbot" class="nav-cta" target="_blank">★ GitHub</a>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg-deco"></div>
+    <div class="container">
+      <div class="hero-tag">Open Source · MIT License</div>
+      <h1>Security is the<br><span class="highlight">architecture.</span></h1>
+      <p class="hero-sub">FortBot is a personal AI agent for WhatsApp built from scratch with zero-trust security — not bolted on after the fact. Built as an answer to OpenClaw.</p>
+      <div class="hero-stats">
+        <div class="stat"><div class="stat-value">223</div><div class="stat-label">Tests passing</div></div>
+        <div class="stat"><div class="stat-value">20</div><div class="stat-label">Vulns patched</div></div>
+        <div class="stat"><div class="stat-value">7</div><div class="stat-label">Defense layers</div></div>
+        <div class="stat"><div class="stat-value">0</div><div class="stat-label">Trust by default</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ARCHITECTURE -->
+  <section class="sec reveal" id="architecture">
+    <div class="container">
+      <div class="section-label"><span class="section-label-line"></span> Architecture</div>
+      <h2 class="section-title">The problem with giving an LLM<br>shell access and no boundaries</h2>
+      <p class="section-desc">OpenClaw proved massive demand for AI agents. It also proved what happens when security is an afterthought — 6 CVEs, 21,000+ instances on Shodan, 341+ malicious skills.</p>
+      <div class="arch-compare">
+        <div class="arch-box bad">
+          <div class="arch-bar arch-bad-bar"></div>
+          <div class="arch-label"><span>✕</span> OpenClaw</div>
+          <div class="arch-code"><span class="warn">[Single LLM]</span> <span class="dim">←</span> untrusted data
+  <span class="dim">+</span> tools
+  <span class="dim">+</span> execution
+  <span class="dim">+</span> <span class="warn">no boundaries</span></div>
+        </div>
+        <div class="arch-box good">
+          <div class="arch-bar arch-good-bar"></div>
+          <div class="arch-label"><span>✓</span> FortBot</div>
+          <div class="arch-code"><span class="hl">[Privileged LLM]</span> <span class="dim">← owner only → plans</span>
+    <span class="dim">│</span>
+<span class="hl">[Policy Engine]</span> <span class="dim">← deterministic validation</span>
+    <span class="dim">│</span>
+<span class="hl">[Executor]</span> <span class="dim">→ sandboxed tools</span>
+    <span class="dim">│</span>
+<span class="note">[Quarantined LLM]</span> <span class="dim">← untrusted data, no tools</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LAYERS -->
+  <section class="sec reveal" id="defense">
+    <div class="container">
+      <div class="section-label"><span class="section-label-line"></span> Defense in Depth</div>
+      <h2 class="section-title">7 layers between the world<br>and your machine</h2>
+      <p class="section-desc">Every message, every action, every data flow passes through deterministic validation before anything executes.</p>
+      <div class="layers-grid">
+        <div class="layer-card"><div class="layer-num">Layer 01</div><div class="layer-name">Trust Classification</div><div class="layer-desc">Every message tagged: OWNER → KNOWN → UNKNOWN → UNTRUSTED. Permissions cascade accordingly.</div></div>
+        <div class="layer-card"><div class="layer-num">Layer 02</div><div class="layer-name">Privileged / Quarantined LLM</div><div class="layer-desc">The planner never sees untrusted data. The quarantine LLM processes external input with zero tool access.</div></div>
+        <div class="layer-card"><div class="layer-num">Layer 03</div><div class="layer-name">Taint Tracking</div><div class="layer-desc">Data carries origin labels throughout the pipeline. Tainted values are blocked from reaching sensitive actions.</div></div>
+        <div class="layer-card"><div class="layer-num">Layer 04</div><div class="layer-name">Policy Engine</div><div class="layer-desc">Deterministic rules catch dangerous patterns before execution. No LLM judgment involved — pure logic.</div></div>
+        <div class="layer-card"><div class="layer-num">Layer 05</div><div class="layer-name">Guardian</div><div class="layer-desc">Separate Python process provides semantic second opinion on sensitive actions. Fail-closed by design.</div></div>
+        <div class="layer-card"><div class="layer-num">Layer 06</div><div class="layer-name">Executor Sandbox</div><div class="layer-desc">40-command shell allowlist, file path restrictions, Docker isolation, plan timeout with automatic rollback.</div></div>
+        <div class="layer-card"><div class="layer-num">Layer 07</div><div class="layer-name">Encryption at Rest</div><div class="layer-desc">AES-256-GCM for the message database and credential vault. No plaintext secrets, ever.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CVE -->
+  <section class="sec reveal" id="vs-openclaw">
+    <div class="container">
+      <div class="section-label"><span class="section-label-line"></span> Security Audit</div>
+      <h2 class="section-title">vs OpenClaw CVEs</h2>
+      <p class="section-desc">A direct comparison against known vulnerabilities in the ecosystem.</p>
+      <div class="cve-wrap">
+        <table class="cve-table">
+          <thead><tr><th>Vulnerability</th><th>OpenClaw</th><th>FortBot</th></tr></thead>
+          <tbody>
+            <tr><td class="vuln-name">CVE-2026-25253 — RCE via WebSocket</td><td><span class="badge badge-warn">Patched late</span></td><td><span class="badge badge-ok">N/A — no WebSocket</span></td></tr>
+            <tr><td class="vuln-name">CVE-2026-25157 — Command injection</td><td><span class="badge badge-warn">Patched</span></td><td><span class="badge badge-ok">Allowlist + Docker</span></td></tr>
+            <tr><td class="vuln-name">CVE-2026-22708 — Prompt injection</td><td><span class="badge badge-danger">Unresolved</span></td><td><span class="badge badge-ok">LLM separation</span></td></tr>
+            <tr><td class="vuln-name">Localhost auto-approval bypass</td><td><span class="badge badge-warn">Patched v2.1</span></td><td><span class="badge badge-ok">N/A — no web panel</span></td></tr>
+            <tr><td class="vuln-name">Heartbeat arbitrary URL fetch</td><td><span class="badge badge-danger">Still exists</span></td><td><span class="badge badge-ok">No heartbeat</span></td></tr>
+            <tr><td class="vuln-name">Plaintext credentials</td><td><span class="badge badge-danger">Still plaintext</span></td><td><span class="badge badge-ok">AES-256-GCM vault</span></td></tr>
+            <tr><td class="vuln-name">341+ malicious skills</td><td><span class="badge badge-danger">No verification</span></td><td><span class="badge badge-ok">No plugin system</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="sec reveal" id="features">
+    <div class="container">
+      <div class="section-label"><span class="section-label-line"></span> Capabilities</div>
+      <h2 class="section-title">What it does</h2>
+      <p class="section-desc">Everything you'd expect from an AI assistant — chat, plan, execute — but every action is auditable and sandboxed.</p>
+      <div class="features-grid">
+        <div class="feature-card"><div class="feature-icon">💬</div><div class="feature-name">WhatsApp Interface</div><div class="feature-desc">Chat naturally, execute tasks, schedule actions — through the app you already use.</div></div>
+        <div class="feature-card"><div class="feature-icon">🧠</div><div class="feature-name">Task Planning</div><div class="feature-desc">"Send a summary of yesterday's messages to Juan at 9am" — complex multi-step plans.</div></div>
+        <div class="feature-card"><div class="feature-icon">📁</div><div class="feature-name">File Operations</div><div class="feature-desc">Read, write, search — sandboxed to safe directories with path validation.</div></div>
+        <div class="feature-card"><div class="feature-icon">⌨️</div><div class="feature-name">Shell Commands</div><div class="feature-desc">40-command allowlist with optional Docker sandbox. No arbitrary execution.</div></div>
+        <div class="feature-card"><div class="feature-icon">🎙</div><div class="feature-name">Voice Transcription</div><div class="feature-desc">Send audio, get text — and automatic task execution from voice commands.</div></div>
+        <div class="feature-card"><div class="feature-icon">⏱</div><div class="feature-name">Scheduled Tasks</div><div class="feature-desc">Cron-style or one-shot delays. Set it and forget it.</div></div>
+        <div class="feature-card"><div class="feature-icon">🌐</div><div class="feature-name">Web Fetch</div><div class="feature-desc">With SSRF protection and private IP blocking built in.</div></div>
+        <div class="feature-card"><div class="feature-icon">📋</div><div class="feature-name">Full Audit Log</div><div class="feature-desc">Every action, every decision, every policy check — logged and queryable.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUICKSTART -->
+  <section class="sec reveal" id="quickstart">
+    <div class="container">
+      <div class="section-label"><span class="section-label-line"></span> Get Started</div>
+      <h2 class="section-title">Up and running in 2 minutes</h2>
+      <p class="section-desc">Node.js 20+, Python 3.12+, and an Anthropic API key.</p>
+      <div class="terminal">
+        <div class="terminal-bar">
+          <div class="terminal-dot"></div><div class="terminal-dot"></div><div class="terminal-dot"></div>
+          <span class="terminal-title">~/fortbot</span>
+        </div>
+        <div class="terminal-body">
+<span class="comment"># Clone and install</span>
+<span class="prompt">$</span> <span class="cmd">git clone https://github.com/JuampyParolo/fortbot.git</span>
+<span class="prompt">$</span> <span class="cmd">cd fortbot && npm install</span>
+<span class="prompt">$</span> <span class="cmd">pip install -r requirements.txt</span>
+
+<span class="comment"># Configure</span>
+<span class="prompt">$</span> <span class="cmd">cp .env.example .env</span>
+<span class="prompt">$</span> <span class="cmd">nano .env</span>  <span class="comment"># OWNER_NUMBER + ANTHROPIC_API_KEY</span>
+
+<span class="comment"># Launch</span>
+<span class="prompt">$</span> <span class="cmd">npm run guardian</span>   <span class="comment"># Terminal 1: security layer</span>
+<span class="prompt">$</span> <span class="cmd">npm run dev</span>        <span class="comment"># Terminal 2: scan QR → ready</span>
+        </div>
+      </div>
+      <div style="margin-top:14px">
+        <div class="terminal" style="max-width:360px">
+          <div class="terminal-bar">
+            <div class="terminal-dot"></div><div class="terminal-dot"></div><div class="terminal-dot"></div>
+            <span class="terminal-title">Docker</span>
+          </div>
+          <div class="terminal-body">
+<span class="prompt">$</span> <span class="cmd">docker compose up</span>
+<span class="comment"># Scan QR from container logs</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-quote">Built by someone who runs agents in live broadcast production — where a false positive means dead air and a real vulnerability means someone else controls your stream.</div>
+        <div class="footer-links">
+          <a href="https://github.com/JuampyParolo/fortbot" target="_blank">GitHub</a>
+          <a href="https://github.com/JuampyParolo/fortbot/blob/main/SECURITY.md" target="_blank">Security</a>
+          <a href="https://github.com/JuampyParolo/fortbot/blob/main/LICENSE" target="_blank">MIT</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const obs = new IntersectionObserver(es => {
+      es.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.08, rootMargin: '0px 0px -50px 0px' });
+    document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+  </script>
+</body>
+</html>
