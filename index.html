@@ -80,9 +80,41 @@
       display: flex; align-items: center; justify-content: center;
       color: #fff; font-size: 13px; font-weight: 700;
     }
+    .nav-center {
+      display: flex; align-items: center; gap: 28px;
+    }
     .nav-links { display: flex; gap: 28px; list-style: none; }
     .nav-links a { color: var(--text2); font-size: 0.82rem; font-weight: 500; }
     .nav-links a:hover { color: var(--accent); }
+    .nav-right {
+      display: flex; align-items: center; gap: 14px;
+    }
+
+    /* Language switcher */
+    .lang-switch {
+      display: flex; gap: 2px;
+      background: var(--bg2);
+      border-radius: 7px;
+      padding: 2px;
+      border: 1px solid var(--border);
+    }
+    .lang-btn {
+      border: none; cursor: pointer;
+      padding: 4px 9px; border-radius: 5px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.68rem; font-weight: 600;
+      color: var(--text3); background: transparent;
+      transition: all 0.2s;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+    .lang-btn:hover { color: var(--text2); }
+    .lang-btn.active {
+      color: var(--text);
+      background: var(--bg-card);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    }
+
     .nav-cta {
       font-family: var(--font-mono); font-size: 0.73rem; font-weight: 600;
       padding: 8px 18px; background: var(--accent); border: none;
@@ -167,9 +199,7 @@
       position: relative; overflow: hidden;
       box-shadow: var(--shadow);
     }
-    .arch-bar {
-      position: absolute; top: 0; left: 0; right: 0; height: 2.5px;
-    }
+    .arch-bar { position: absolute; top: 0; left: 0; right: 0; height: 2.5px; }
     .arch-bad-bar { background: var(--danger); }
     .arch-good-bar { background: var(--accent); }
     .arch-label {
@@ -336,13 +366,23 @@
   <header class="nav-wrap">
     <div class="nav-inner">
       <div class="nav-logo"><div class="icon">F</div> FortBot</div>
-      <ul class="nav-links">
-        <li><a href="#architecture">Architecture</a></li>
-        <li><a href="#defense">Defense</a></li>
-        <li><a href="#vs-openclaw">vs OpenClaw</a></li>
-        <li><a href="#quickstart">Quick Start</a></li>
-      </ul>
-      <a href="https://github.com/JuampyParolo/fortbot" class="nav-cta" target="_blank">★ GitHub</a>
+      <div class="nav-center">
+        <ul class="nav-links">
+          <li><a href="#architecture" data-i18n="nav_arch">Architecture</a></li>
+          <li><a href="#defense" data-i18n="nav_defense">Defense</a></li>
+          <li><a href="#vs-openclaw" data-i18n="nav_vs">vs OpenClaw</a></li>
+          <li><a href="#quickstart" data-i18n="nav_start">Quick Start</a></li>
+        </ul>
+      </div>
+      <div class="nav-right">
+        <div class="lang-switch">
+          <button class="lang-btn active" onclick="setLang('en')">EN</button>
+          <button class="lang-btn" onclick="setLang('es')">ES</button>
+          <button class="lang-btn" onclick="setLang('pt')">PT</button>
+          <button class="lang-btn" onclick="setLang('fr')">FR</button>
+        </div>
+        <a href="https://github.com/JuampyParolo/fortbot" class="nav-cta" target="_blank">★ GitHub</a>
+      </div>
     </div>
   </header>
 
@@ -350,14 +390,14 @@
   <section class="hero">
     <div class="hero-bg-deco"></div>
     <div class="container">
-      <div class="hero-tag">Open Source · MIT License</div>
-      <h1>Security is the<br><span class="highlight">architecture.</span></h1>
-      <p class="hero-sub">FortBot is a personal AI agent for WhatsApp built from scratch with zero-trust security — not bolted on after the fact. Built as an answer to OpenClaw.</p>
+      <div class="hero-tag" data-i18n="hero_tag">Open Source · MIT License</div>
+      <h1 data-i18n-html="hero_title">Security is the<br><span class="highlight">architecture.</span></h1>
+      <p class="hero-sub" data-i18n="hero_sub">FortBot is a personal AI agent for WhatsApp built from scratch with zero-trust security — not bolted on after the fact. Built as an answer to OpenClaw.</p>
       <div class="hero-stats">
-        <div class="stat"><div class="stat-value">223</div><div class="stat-label">Tests passing</div></div>
-        <div class="stat"><div class="stat-value">20</div><div class="stat-label">Vulns patched</div></div>
-        <div class="stat"><div class="stat-value">7</div><div class="stat-label">Defense layers</div></div>
-        <div class="stat"><div class="stat-value">0</div><div class="stat-label">Trust by default</div></div>
+        <div class="stat"><div class="stat-value">223</div><div class="stat-label" data-i18n="stat_tests">Tests passing</div></div>
+        <div class="stat"><div class="stat-value">20</div><div class="stat-label" data-i18n="stat_vulns">Vulns patched</div></div>
+        <div class="stat"><div class="stat-value">7</div><div class="stat-label" data-i18n="stat_layers">Defense layers</div></div>
+        <div class="stat"><div class="stat-value">0</div><div class="stat-label" data-i18n="stat_trust">Trust by default</div></div>
       </div>
     </div>
   </section>
@@ -365,28 +405,28 @@
   <!-- ARCHITECTURE -->
   <section class="sec reveal" id="architecture">
     <div class="container">
-      <div class="section-label"><span class="section-label-line"></span> Architecture</div>
-      <h2 class="section-title">The problem with giving an LLM<br>shell access and no boundaries</h2>
-      <p class="section-desc">OpenClaw proved massive demand for AI agents. It also proved what happens when security is an afterthought — 6 CVEs, 21,000+ instances on Shodan, 341+ malicious skills.</p>
+      <div class="section-label"><span class="section-label-line"></span> <span data-i18n="nav_arch">Architecture</span></div>
+      <h2 class="section-title" data-i18n-html="arch_title">The problem with giving an LLM<br>shell access and no boundaries</h2>
+      <p class="section-desc" data-i18n="arch_desc">OpenClaw proved massive demand for AI agents. It also proved what happens when security is an afterthought — 6 CVEs, 21,000+ instances on Shodan, 341+ malicious skills.</p>
       <div class="arch-compare">
         <div class="arch-box bad">
           <div class="arch-bar arch-bad-bar"></div>
           <div class="arch-label"><span>✕</span> OpenClaw</div>
-          <div class="arch-code"><span class="warn">[Single LLM]</span> <span class="dim">←</span> untrusted data
+          <div class="arch-code"><span class="warn">[Single LLM]</span> <span class="dim">←</span> <span data-i18n="arch_untrusted">untrusted data</span>
   <span class="dim">+</span> tools
-  <span class="dim">+</span> execution
-  <span class="dim">+</span> <span class="warn">no boundaries</span></div>
+  <span class="dim">+</span> <span data-i18n="arch_execution">execution</span>
+  <span class="dim">+</span> <span class="warn" data-i18n="arch_nobounds">no boundaries</span></div>
         </div>
         <div class="arch-box good">
           <div class="arch-bar arch-good-bar"></div>
           <div class="arch-label"><span>✓</span> FortBot</div>
-          <div class="arch-code"><span class="hl">[Privileged LLM]</span> <span class="dim">← owner only → plans</span>
+          <div class="arch-code"><span class="hl">[Privileged LLM]</span> <span class="dim">← <span data-i18n="arch_owner">owner only → plans</span></span>
     <span class="dim">│</span>
-<span class="hl">[Policy Engine]</span> <span class="dim">← deterministic validation</span>
+<span class="hl">[Policy Engine]</span> <span class="dim">← <span data-i18n="arch_determ">deterministic validation</span></span>
     <span class="dim">│</span>
-<span class="hl">[Executor]</span> <span class="dim">→ sandboxed tools</span>
+<span class="hl">[Executor]</span> <span class="dim">→ <span data-i18n="arch_sandbox">sandboxed tools</span></span>
     <span class="dim">│</span>
-<span class="note">[Quarantined LLM]</span> <span class="dim">← untrusted data, no tools</span></div>
+<span class="note">[Quarantined LLM]</span> <span class="dim">← <span data-i18n="arch_quarantine">untrusted data, no tools</span></span></div>
         </div>
       </div>
     </div>
@@ -395,17 +435,17 @@
   <!-- LAYERS -->
   <section class="sec reveal" id="defense">
     <div class="container">
-      <div class="section-label"><span class="section-label-line"></span> Defense in Depth</div>
-      <h2 class="section-title">7 layers between the world<br>and your machine</h2>
-      <p class="section-desc">Every message, every action, every data flow passes through deterministic validation before anything executes.</p>
+      <div class="section-label"><span class="section-label-line"></span> <span data-i18n="defense_label">Defense in Depth</span></div>
+      <h2 class="section-title" data-i18n-html="defense_title">7 layers between the world<br>and your machine</h2>
+      <p class="section-desc" data-i18n="defense_desc">Every message, every action, every data flow passes through deterministic validation before anything executes.</p>
       <div class="layers-grid">
-        <div class="layer-card"><div class="layer-num">Layer 01</div><div class="layer-name">Trust Classification</div><div class="layer-desc">Every message tagged: OWNER → KNOWN → UNKNOWN → UNTRUSTED. Permissions cascade accordingly.</div></div>
-        <div class="layer-card"><div class="layer-num">Layer 02</div><div class="layer-name">Privileged / Quarantined LLM</div><div class="layer-desc">The planner never sees untrusted data. The quarantine LLM processes external input with zero tool access.</div></div>
-        <div class="layer-card"><div class="layer-num">Layer 03</div><div class="layer-name">Taint Tracking</div><div class="layer-desc">Data carries origin labels throughout the pipeline. Tainted values are blocked from reaching sensitive actions.</div></div>
-        <div class="layer-card"><div class="layer-num">Layer 04</div><div class="layer-name">Policy Engine</div><div class="layer-desc">Deterministic rules catch dangerous patterns before execution. No LLM judgment involved — pure logic.</div></div>
-        <div class="layer-card"><div class="layer-num">Layer 05</div><div class="layer-name">Guardian</div><div class="layer-desc">Separate Python process provides semantic second opinion on sensitive actions. Fail-closed by design.</div></div>
-        <div class="layer-card"><div class="layer-num">Layer 06</div><div class="layer-name">Executor Sandbox</div><div class="layer-desc">40-command shell allowlist, file path restrictions, Docker isolation, plan timeout with automatic rollback.</div></div>
-        <div class="layer-card"><div class="layer-num">Layer 07</div><div class="layer-name">Encryption at Rest</div><div class="layer-desc">AES-256-GCM for the message database and credential vault. No plaintext secrets, ever.</div></div>
+        <div class="layer-card"><div class="layer-num">Layer 01</div><div class="layer-name" data-i18n="l1_name">Trust Classification</div><div class="layer-desc" data-i18n="l1_desc">Every message tagged: OWNER → KNOWN → UNKNOWN → UNTRUSTED. Permissions cascade accordingly.</div></div>
+        <div class="layer-card"><div class="layer-num">Layer 02</div><div class="layer-name" data-i18n="l2_name">Privileged / Quarantined LLM</div><div class="layer-desc" data-i18n="l2_desc">The planner never sees untrusted data. The quarantine LLM processes external input with zero tool access.</div></div>
+        <div class="layer-card"><div class="layer-num">Layer 03</div><div class="layer-name" data-i18n="l3_name">Taint Tracking</div><div class="layer-desc" data-i18n="l3_desc">Data carries origin labels throughout the pipeline. Tainted values are blocked from reaching sensitive actions.</div></div>
+        <div class="layer-card"><div class="layer-num">Layer 04</div><div class="layer-name" data-i18n="l4_name">Policy Engine</div><div class="layer-desc" data-i18n="l4_desc">Deterministic rules catch dangerous patterns before execution. No LLM judgment involved — pure logic.</div></div>
+        <div class="layer-card"><div class="layer-num">Layer 05</div><div class="layer-name">Guardian</div><div class="layer-desc" data-i18n="l5_desc">Separate Python process provides semantic second opinion on sensitive actions. Fail-closed by design.</div></div>
+        <div class="layer-card"><div class="layer-num">Layer 06</div><div class="layer-name" data-i18n="l6_name">Executor Sandbox</div><div class="layer-desc" data-i18n="l6_desc">40-command shell allowlist, file path restrictions, Docker isolation, plan timeout with automatic rollback.</div></div>
+        <div class="layer-card"><div class="layer-num">Layer 07</div><div class="layer-name" data-i18n="l7_name">Encryption at Rest</div><div class="layer-desc" data-i18n="l7_desc">AES-256-GCM for the message database and credential vault. No plaintext secrets, ever.</div></div>
       </div>
     </div>
   </section>
@@ -413,20 +453,20 @@
   <!-- CVE -->
   <section class="sec reveal" id="vs-openclaw">
     <div class="container">
-      <div class="section-label"><span class="section-label-line"></span> Security Audit</div>
-      <h2 class="section-title">vs OpenClaw CVEs</h2>
-      <p class="section-desc">A direct comparison against known vulnerabilities in the ecosystem.</p>
+      <div class="section-label"><span class="section-label-line"></span> <span data-i18n="cve_label">Security Audit</span></div>
+      <h2 class="section-title" data-i18n="cve_title">vs OpenClaw CVEs</h2>
+      <p class="section-desc" data-i18n="cve_desc">A direct comparison against known vulnerabilities in the ecosystem.</p>
       <div class="cve-wrap">
         <table class="cve-table">
-          <thead><tr><th>Vulnerability</th><th>OpenClaw</th><th>FortBot</th></tr></thead>
+          <thead><tr><th data-i18n="th_vuln">Vulnerability</th><th>OpenClaw</th><th>FortBot</th></tr></thead>
           <tbody>
-            <tr><td class="vuln-name">CVE-2026-25253 — RCE via WebSocket</td><td><span class="badge badge-warn">Patched late</span></td><td><span class="badge badge-ok">N/A — no WebSocket</span></td></tr>
-            <tr><td class="vuln-name">CVE-2026-25157 — Command injection</td><td><span class="badge badge-warn">Patched</span></td><td><span class="badge badge-ok">Allowlist + Docker</span></td></tr>
-            <tr><td class="vuln-name">CVE-2026-22708 — Prompt injection</td><td><span class="badge badge-danger">Unresolved</span></td><td><span class="badge badge-ok">LLM separation</span></td></tr>
-            <tr><td class="vuln-name">Localhost auto-approval bypass</td><td><span class="badge badge-warn">Patched v2.1</span></td><td><span class="badge badge-ok">N/A — no web panel</span></td></tr>
-            <tr><td class="vuln-name">Heartbeat arbitrary URL fetch</td><td><span class="badge badge-danger">Still exists</span></td><td><span class="badge badge-ok">No heartbeat</span></td></tr>
-            <tr><td class="vuln-name">Plaintext credentials</td><td><span class="badge badge-danger">Still plaintext</span></td><td><span class="badge badge-ok">AES-256-GCM vault</span></td></tr>
-            <tr><td class="vuln-name">341+ malicious skills</td><td><span class="badge badge-danger">No verification</span></td><td><span class="badge badge-ok">No plugin system</span></td></tr>
+            <tr><td class="vuln-name">CVE-2026-25253 — RCE via WebSocket</td><td><span class="badge badge-warn" data-i18n="patched_late">Patched late</span></td><td><span class="badge badge-ok">N/A — no WebSocket</span></td></tr>
+            <tr><td class="vuln-name" data-i18n="cve_cmdinj">CVE-2026-25157 — Command injection</td><td><span class="badge badge-warn" data-i18n="patched">Patched</span></td><td><span class="badge badge-ok">Allowlist + Docker</span></td></tr>
+            <tr><td class="vuln-name" data-i18n="cve_prompt">CVE-2026-22708 — Prompt injection</td><td><span class="badge badge-danger" data-i18n="unresolved">Unresolved</span></td><td><span class="badge badge-ok" data-i18n="llm_sep">LLM separation</span></td></tr>
+            <tr><td class="vuln-name" data-i18n="cve_localhost">Localhost auto-approval bypass</td><td><span class="badge badge-warn">Patched v2.1</span></td><td><span class="badge badge-ok" data-i18n="no_panel">N/A — no web panel</span></td></tr>
+            <tr><td class="vuln-name" data-i18n="cve_heartbeat">Heartbeat arbitrary URL fetch</td><td><span class="badge badge-danger" data-i18n="still_exists">Still exists</span></td><td><span class="badge badge-ok" data-i18n="no_heartbeat">No heartbeat</span></td></tr>
+            <tr><td class="vuln-name" data-i18n="cve_plaintext">Plaintext credentials</td><td><span class="badge badge-danger" data-i18n="still_plain">Still plaintext</span></td><td><span class="badge badge-ok">AES-256-GCM vault</span></td></tr>
+            <tr><td class="vuln-name" data-i18n="cve_skills">341+ malicious skills</td><td><span class="badge badge-danger" data-i18n="no_verif">No verification</span></td><td><span class="badge badge-ok" data-i18n="no_plugin">No plugin system</span></td></tr>
           </tbody>
         </table>
       </div>
@@ -436,18 +476,18 @@
   <!-- FEATURES -->
   <section class="sec reveal" id="features">
     <div class="container">
-      <div class="section-label"><span class="section-label-line"></span> Capabilities</div>
-      <h2 class="section-title">What it does</h2>
-      <p class="section-desc">Everything you'd expect from an AI assistant — chat, plan, execute — but every action is auditable and sandboxed.</p>
+      <div class="section-label"><span class="section-label-line"></span> <span data-i18n="feat_label">Capabilities</span></div>
+      <h2 class="section-title" data-i18n="feat_title">What it does</h2>
+      <p class="section-desc" data-i18n="feat_desc">Everything you'd expect from an AI assistant — chat, plan, execute — but every action is auditable and sandboxed.</p>
       <div class="features-grid">
-        <div class="feature-card"><div class="feature-icon">💬</div><div class="feature-name">WhatsApp Interface</div><div class="feature-desc">Chat naturally, execute tasks, schedule actions — through the app you already use.</div></div>
-        <div class="feature-card"><div class="feature-icon">🧠</div><div class="feature-name">Task Planning</div><div class="feature-desc">"Send a summary of yesterday's messages to Juan at 9am" — complex multi-step plans.</div></div>
-        <div class="feature-card"><div class="feature-icon">📁</div><div class="feature-name">File Operations</div><div class="feature-desc">Read, write, search — sandboxed to safe directories with path validation.</div></div>
-        <div class="feature-card"><div class="feature-icon">⌨️</div><div class="feature-name">Shell Commands</div><div class="feature-desc">40-command allowlist with optional Docker sandbox. No arbitrary execution.</div></div>
-        <div class="feature-card"><div class="feature-icon">🎙</div><div class="feature-name">Voice Transcription</div><div class="feature-desc">Send audio, get text — and automatic task execution from voice commands.</div></div>
-        <div class="feature-card"><div class="feature-icon">⏱</div><div class="feature-name">Scheduled Tasks</div><div class="feature-desc">Cron-style or one-shot delays. Set it and forget it.</div></div>
-        <div class="feature-card"><div class="feature-icon">🌐</div><div class="feature-name">Web Fetch</div><div class="feature-desc">With SSRF protection and private IP blocking built in.</div></div>
-        <div class="feature-card"><div class="feature-icon">📋</div><div class="feature-name">Full Audit Log</div><div class="feature-desc">Every action, every decision, every policy check — logged and queryable.</div></div>
+        <div class="feature-card"><div class="feature-icon">💬</div><div class="feature-name" data-i18n="f1_name">WhatsApp Interface</div><div class="feature-desc" data-i18n="f1_desc">Chat naturally, execute tasks, schedule actions — through the app you already use.</div></div>
+        <div class="feature-card"><div class="feature-icon">🧠</div><div class="feature-name" data-i18n="f2_name">Task Planning</div><div class="feature-desc" data-i18n="f2_desc">"Send a summary of yesterday's messages to Juan at 9am" — complex multi-step plans.</div></div>
+        <div class="feature-card"><div class="feature-icon">📁</div><div class="feature-name" data-i18n="f3_name">File Operations</div><div class="feature-desc" data-i18n="f3_desc">Read, write, search — sandboxed to safe directories with path validation.</div></div>
+        <div class="feature-card"><div class="feature-icon">⌨️</div><div class="feature-name" data-i18n="f4_name">Shell Commands</div><div class="feature-desc" data-i18n="f4_desc">40-command allowlist with optional Docker sandbox. No arbitrary execution.</div></div>
+        <div class="feature-card"><div class="feature-icon">🎙</div><div class="feature-name" data-i18n="f5_name">Voice Transcription</div><div class="feature-desc" data-i18n="f5_desc">Send audio, get text — and automatic task execution from voice commands.</div></div>
+        <div class="feature-card"><div class="feature-icon">⏱</div><div class="feature-name" data-i18n="f6_name">Scheduled Tasks</div><div class="feature-desc" data-i18n="f6_desc">Cron-style or one-shot delays. Set it and forget it.</div></div>
+        <div class="feature-card"><div class="feature-icon">🌐</div><div class="feature-name" data-i18n="f7_name">Web Fetch</div><div class="feature-desc" data-i18n="f7_desc">With SSRF protection and private IP blocking built in.</div></div>
+        <div class="feature-card"><div class="feature-icon">📋</div><div class="feature-name" data-i18n="f8_name">Full Audit Log</div><div class="feature-desc" data-i18n="f8_desc">Every action, every decision, every policy check — logged and queryable.</div></div>
       </div>
     </div>
   </section>
@@ -455,27 +495,27 @@
   <!-- QUICKSTART -->
   <section class="sec reveal" id="quickstart">
     <div class="container">
-      <div class="section-label"><span class="section-label-line"></span> Get Started</div>
-      <h2 class="section-title">Up and running in 2 minutes</h2>
-      <p class="section-desc">Node.js 20+, Python 3.12+, and an Anthropic API key.</p>
+      <div class="section-label"><span class="section-label-line"></span> <span data-i18n="nav_start">Quick Start</span></div>
+      <h2 class="section-title" data-i18n="qs_title">Up and running in 2 minutes</h2>
+      <p class="section-desc" data-i18n="qs_desc">Node.js 20+, Python 3.12+, and an Anthropic API key.</p>
       <div class="terminal">
         <div class="terminal-bar">
           <div class="terminal-dot"></div><div class="terminal-dot"></div><div class="terminal-dot"></div>
           <span class="terminal-title">~/fortbot</span>
         </div>
         <div class="terminal-body">
-<span class="comment"># Clone and install</span>
+<span class="comment" data-i18n="term_clone"># Clone and install</span>
 <span class="prompt">$</span> <span class="cmd">git clone https://github.com/JuampyParolo/fortbot.git</span>
 <span class="prompt">$</span> <span class="cmd">cd fortbot && npm install</span>
 <span class="prompt">$</span> <span class="cmd">pip install -r requirements.txt</span>
 
-<span class="comment"># Configure</span>
+<span class="comment" data-i18n="term_config"># Configure</span>
 <span class="prompt">$</span> <span class="cmd">cp .env.example .env</span>
 <span class="prompt">$</span> <span class="cmd">nano .env</span>  <span class="comment"># OWNER_NUMBER + ANTHROPIC_API_KEY</span>
 
-<span class="comment"># Launch</span>
-<span class="prompt">$</span> <span class="cmd">npm run guardian</span>   <span class="comment"># Terminal 1: security layer</span>
-<span class="prompt">$</span> <span class="cmd">npm run dev</span>        <span class="comment"># Terminal 2: scan QR → ready</span>
+<span class="comment" data-i18n="term_launch"># Launch</span>
+<span class="prompt">$</span> <span class="cmd">npm run guardian</span>   <span class="comment" data-i18n="term_t1"># Terminal 1: security layer</span>
+<span class="prompt">$</span> <span class="cmd">npm run dev</span>        <span class="comment" data-i18n="term_t2"># Terminal 2: scan QR → ready</span>
         </div>
       </div>
       <div style="margin-top:14px">
@@ -486,7 +526,7 @@
           </div>
           <div class="terminal-body">
 <span class="prompt">$</span> <span class="cmd">docker compose up</span>
-<span class="comment"># Scan QR from container logs</span>
+<span class="comment" data-i18n="term_docker"># Scan QR from container logs</span>
           </div>
         </div>
       </div>
@@ -497,7 +537,7 @@
   <footer>
     <div class="container">
       <div class="footer-inner">
-        <div class="footer-quote">Built by someone who runs agents in live broadcast production — where a false positive means dead air and a real vulnerability means someone else controls your stream.</div>
+        <div class="footer-quote" data-i18n="footer_quote">Built by someone who runs agents in live broadcast production — where a false positive means dead air and a real vulnerability means someone else controls your stream.</div>
         <div class="footer-links">
           <a href="https://github.com/JuampyParolo/fortbot" target="_blank">GitHub</a>
           <a href="https://github.com/JuampyParolo/fortbot/blob/main/SECURITY.md" target="_blank">Security</a>
@@ -508,10 +548,217 @@
   </footer>
 
   <script>
+    const i18n = {
+      en: {
+        nav_arch: "Architecture", nav_defense: "Defense", nav_vs: "vs OpenClaw", nav_start: "Quick Start",
+        hero_tag: "Open Source · MIT License",
+        hero_title: 'Security is the<br><span class="highlight">architecture.</span>',
+        hero_sub: "FortBot is a personal AI agent for WhatsApp built from scratch with zero-trust security — not bolted on after the fact. Built as an answer to OpenClaw.",
+        stat_tests: "Tests passing", stat_vulns: "Vulns patched", stat_layers: "Defense layers", stat_trust: "Trust by default",
+        arch_title: 'The problem with giving an LLM<br>shell access and no boundaries',
+        arch_desc: "OpenClaw proved massive demand for AI agents. It also proved what happens when security is an afterthought — 6 CVEs, 21,000+ instances on Shodan, 341+ malicious skills.",
+        arch_untrusted: "untrusted data", arch_execution: "execution", arch_nobounds: "no boundaries",
+        arch_owner: "owner only → plans", arch_determ: "deterministic validation", arch_sandbox: "sandboxed tools", arch_quarantine: "untrusted data, no tools",
+        defense_label: "Defense in Depth",
+        defense_title: '7 layers between the world<br>and your machine',
+        defense_desc: "Every message, every action, every data flow passes through deterministic validation before anything executes.",
+        l1_name: "Trust Classification", l1_desc: "Every message tagged: OWNER → KNOWN → UNKNOWN → UNTRUSTED. Permissions cascade accordingly.",
+        l2_name: "Privileged / Quarantined LLM", l2_desc: "The planner never sees untrusted data. The quarantine LLM processes external input with zero tool access.",
+        l3_name: "Taint Tracking", l3_desc: "Data carries origin labels throughout the pipeline. Tainted values are blocked from reaching sensitive actions.",
+        l4_name: "Policy Engine", l4_desc: "Deterministic rules catch dangerous patterns before execution. No LLM judgment involved — pure logic.",
+        l5_desc: "Separate Python process provides semantic second opinion on sensitive actions. Fail-closed by design.",
+        l6_name: "Executor Sandbox", l6_desc: "40-command shell allowlist, file path restrictions, Docker isolation, plan timeout with automatic rollback.",
+        l7_name: "Encryption at Rest", l7_desc: "AES-256-GCM for the message database and credential vault. No plaintext secrets, ever.",
+        cve_label: "Security Audit", cve_title: "vs OpenClaw CVEs",
+        cve_desc: "A direct comparison against known vulnerabilities in the ecosystem.",
+        th_vuln: "Vulnerability",
+        cve_cmdinj: "CVE-2026-25157 — Command injection", cve_prompt: "CVE-2026-22708 — Prompt injection",
+        cve_localhost: "Localhost auto-approval bypass", cve_heartbeat: "Heartbeat arbitrary URL fetch",
+        cve_plaintext: "Plaintext credentials", cve_skills: "341+ malicious skills",
+        patched_late: "Patched late", patched: "Patched", unresolved: "Unresolved",
+        llm_sep: "LLM separation", no_panel: "N/A — no web panel", still_exists: "Still exists",
+        no_heartbeat: "No heartbeat", still_plain: "Still plaintext", no_verif: "No verification", no_plugin: "No plugin system",
+        feat_label: "Capabilities", feat_title: "What it does",
+        feat_desc: "Everything you'd expect from an AI assistant — chat, plan, execute — but every action is auditable and sandboxed.",
+        f1_name: "WhatsApp Interface", f1_desc: "Chat naturally, execute tasks, schedule actions — through the app you already use.",
+        f2_name: "Task Planning", f2_desc: '"Send a summary of yesterday\'s messages to Juan at 9am" — complex multi-step plans.',
+        f3_name: "File Operations", f3_desc: "Read, write, search — sandboxed to safe directories with path validation.",
+        f4_name: "Shell Commands", f4_desc: "40-command allowlist with optional Docker sandbox. No arbitrary execution.",
+        f5_name: "Voice Transcription", f5_desc: "Send audio, get text — and automatic task execution from voice commands.",
+        f6_name: "Scheduled Tasks", f6_desc: "Cron-style or one-shot delays. Set it and forget it.",
+        f7_name: "Web Fetch", f7_desc: "With SSRF protection and private IP blocking built in.",
+        f8_name: "Full Audit Log", f8_desc: "Every action, every decision, every policy check — logged and queryable.",
+        qs_title: "Up and running in 2 minutes", qs_desc: "Node.js 20+, Python 3.12+, and an Anthropic API key.",
+        term_clone: "# Clone and install", term_config: "# Configure", term_launch: "# Launch",
+        term_t1: "# Terminal 1: security layer", term_t2: "# Terminal 2: scan QR → ready",
+        term_docker: "# Scan QR from container logs",
+        footer_quote: "Built by someone who runs agents in live broadcast production — where a false positive means dead air and a real vulnerability means someone else controls your stream."
+      },
+      es: {
+        nav_arch: "Arquitectura", nav_defense: "Defensa", nav_vs: "vs OpenClaw", nav_start: "Inicio rápido",
+        hero_tag: "Código abierto · Licencia MIT",
+        hero_title: 'La seguridad es la<br><span class="highlight">arquitectura.</span>',
+        hero_sub: "FortBot es un agente AI personal para WhatsApp construido desde cero con seguridad zero-trust — no agregada después. Construido como respuesta a la arquitectura de OpenClaw.",
+        stat_tests: "Tests pasando", stat_vulns: "Vulns corregidas", stat_layers: "Capas de defensa", stat_trust: "Confianza por defecto",
+        arch_title: 'El problema de darle a un LLM<br>acceso a shell sin límites',
+        arch_desc: "OpenClaw demostró una demanda masiva de agentes AI. También demostró qué pasa cuando la seguridad es un agregado tardío — 6 CVEs, 21,000+ instancias en Shodan, 341+ skills maliciosos.",
+        arch_untrusted: "datos no confiables", arch_execution: "ejecución", arch_nobounds: "sin límites",
+        arch_owner: "solo owner → planes", arch_determ: "validación determinística", arch_sandbox: "herramientas aisladas", arch_quarantine: "datos no confiables, sin herramientas",
+        defense_label: "Defensa en profundidad",
+        defense_title: '7 capas entre el mundo<br>y tu máquina',
+        defense_desc: "Cada mensaje, cada acción, cada flujo de datos pasa por validación determinística antes de que algo se ejecute.",
+        l1_name: "Clasificación de confianza", l1_desc: "Cada mensaje se etiqueta: OWNER → KNOWN → UNKNOWN → UNTRUSTED. Los permisos se propagan en cascada.",
+        l2_name: "LLM Privilegiado / Cuarentena", l2_desc: "El planificador nunca ve datos no confiables. El LLM en cuarentena procesa entradas externas sin acceso a herramientas.",
+        l3_name: "Rastreo de contaminación", l3_desc: "Los datos llevan etiquetas de origen. Los valores contaminados no pueden llegar a acciones sensibles.",
+        l4_name: "Motor de políticas", l4_desc: "Reglas determinísticas detectan patrones peligrosos antes de la ejecución. Sin juicio de LLM — lógica pura.",
+        l5_desc: "Proceso Python separado que da una segunda opinión semántica sobre acciones sensibles. Fail-closed por diseño.",
+        l6_name: "Sandbox del ejecutor", l6_desc: "Allowlist de 40 comandos, restricciones de rutas, aislamiento Docker, timeout de planes con rollback automático.",
+        l7_name: "Encriptación en reposo", l7_desc: "AES-256-GCM para la base de datos de mensajes y el vault de credenciales. Sin secretos en texto plano, nunca.",
+        cve_label: "Auditoría de seguridad", cve_title: "vs CVEs de OpenClaw",
+        cve_desc: "Comparación directa contra vulnerabilidades conocidas del ecosistema.",
+        th_vuln: "Vulnerabilidad",
+        cve_cmdinj: "CVE-2026-25157 — Inyección de comandos", cve_prompt: "CVE-2026-22708 — Inyección de prompts",
+        cve_localhost: "Bypass de auto-aprobación localhost", cve_heartbeat: "Heartbeat fetch de URLs arbitrarias",
+        cve_plaintext: "Credenciales en texto plano", cve_skills: "341+ skills maliciosos",
+        patched_late: "Corregido tarde", patched: "Corregido", unresolved: "Sin resolver",
+        llm_sep: "Separación de LLM", no_panel: "N/A — sin panel web", still_exists: "Todavía existe",
+        no_heartbeat: "Sin heartbeat", still_plain: "Sigue en texto plano", no_verif: "Sin verificación", no_plugin: "Sin sistema de plugins",
+        feat_label: "Capacidades", feat_title: "Qué hace",
+        feat_desc: "Todo lo que esperarías de un asistente AI — chatear, planificar, ejecutar — pero cada acción es auditable y aislada.",
+        f1_name: "Interfaz WhatsApp", f1_desc: "Chateá naturalmente, ejecutá tareas, programá acciones — desde la app que ya usás.",
+        f2_name: "Planificación de tareas", f2_desc: '"Mandá un resumen de los mensajes de ayer a Juan a las 9am" — planes complejos multi-paso.',
+        f3_name: "Operaciones de archivos", f3_desc: "Leer, escribir, buscar — aislado a directorios seguros con validación de rutas.",
+        f4_name: "Comandos shell", f4_desc: "Allowlist de 40 comandos con sandbox Docker opcional. Sin ejecución arbitraria.",
+        f5_name: "Transcripción de voz", f5_desc: "Enviá audio, recibí texto — y ejecución automática de tareas desde comandos de voz.",
+        f6_name: "Tareas programadas", f6_desc: "Estilo cron o delays únicos. Configuralo y olvidate.",
+        f7_name: "Web Fetch", f7_desc: "Con protección SSRF y bloqueo de IPs privadas integrado.",
+        f8_name: "Log de auditoría completo", f8_desc: "Cada acción, cada decisión, cada chequeo de políticas — logueado y consultable.",
+        qs_title: "Funcionando en 2 minutos", qs_desc: "Node.js 20+, Python 3.12+, y una API key de Anthropic.",
+        term_clone: "# Clonar e instalar", term_config: "# Configurar", term_launch: "# Lanzar",
+        term_t1: "# Terminal 1: capa de seguridad", term_t2: "# Terminal 2: escaneá QR → listo",
+        term_docker: "# Escaneá QR desde los logs del contenedor",
+        footer_quote: "Construido por alguien que corre agentes en producción de broadcast en vivo — donde un falso positivo significa aire muerto y una vulnerabilidad real significa que otro controla tu señal."
+      },
+      pt: {
+        nav_arch: "Arquitetura", nav_defense: "Defesa", nav_vs: "vs OpenClaw", nav_start: "Início rápido",
+        hero_tag: "Código aberto · Licença MIT",
+        hero_title: 'A segurança é a<br><span class="highlight">arquitetura.</span>',
+        hero_sub: "FortBot é um agente AI pessoal para WhatsApp construído do zero com segurança zero-trust — não adicionada depois. Construído como resposta à arquitetura do OpenClaw.",
+        stat_tests: "Testes passando", stat_vulns: "Vulns corrigidas", stat_layers: "Camadas de defesa", stat_trust: "Confiança padrão",
+        arch_title: 'O problema de dar a um LLM<br>acesso ao shell sem limites',
+        arch_desc: "OpenClaw provou demanda massiva por agentes AI. Também provou o que acontece quando segurança é um adendo — 6 CVEs, 21.000+ instâncias no Shodan, 341+ skills maliciosos.",
+        arch_untrusted: "dados não confiáveis", arch_execution: "execução", arch_nobounds: "sem limites",
+        arch_owner: "só owner → planos", arch_determ: "validação determinística", arch_sandbox: "ferramentas isoladas", arch_quarantine: "dados não confiáveis, sem ferramentas",
+        defense_label: "Defesa em profundidade",
+        defense_title: '7 camadas entre o mundo<br>e sua máquina',
+        defense_desc: "Cada mensagem, cada ação, cada fluxo de dados passa por validação determinística antes de qualquer execução.",
+        l1_name: "Classificação de confiança", l1_desc: "Cada mensagem é rotulada: OWNER → KNOWN → UNKNOWN → UNTRUSTED. Permissões se propagam em cascata.",
+        l2_name: "LLM Privilegiado / Quarentena", l2_desc: "O planejador nunca vê dados não confiáveis. O LLM em quarentena processa entradas externas sem acesso a ferramentas.",
+        l3_name: "Rastreamento de contaminação", l3_desc: "Os dados carregam rótulos de origem. Valores contaminados são bloqueados de chegar a ações sensíveis.",
+        l4_name: "Motor de políticas", l4_desc: "Regras determinísticas detectam padrões perigosos antes da execução. Sem julgamento de LLM — lógica pura.",
+        l5_desc: "Processo Python separado que fornece segunda opinião semântica sobre ações sensíveis. Fail-closed por design.",
+        l6_name: "Sandbox do executor", l6_desc: "Allowlist de 40 comandos, restrições de caminhos, isolamento Docker, timeout de planos com rollback automático.",
+        l7_name: "Criptografia em repouso", l7_desc: "AES-256-GCM para o banco de mensagens e vault de credenciais. Sem segredos em texto plano, nunca.",
+        cve_label: "Auditoria de segurança", cve_title: "vs CVEs do OpenClaw",
+        cve_desc: "Comparação direta com vulnerabilidades conhecidas do ecossistema.",
+        th_vuln: "Vulnerabilidade",
+        cve_cmdinj: "CVE-2026-25157 — Injeção de comandos", cve_prompt: "CVE-2026-22708 — Injeção de prompts",
+        cve_localhost: "Bypass de auto-aprovação localhost", cve_heartbeat: "Heartbeat fetch de URLs arbitrárias",
+        cve_plaintext: "Credenciais em texto plano", cve_skills: "341+ skills maliciosos",
+        patched_late: "Corrigido tarde", patched: "Corrigido", unresolved: "Não resolvido",
+        llm_sep: "Separação de LLM", no_panel: "N/A — sem painel web", still_exists: "Ainda existe",
+        no_heartbeat: "Sem heartbeat", still_plain: "Ainda em texto plano", no_verif: "Sem verificação", no_plugin: "Sem sistema de plugins",
+        feat_label: "Capacidades", feat_title: "O que faz",
+        feat_desc: "Tudo que você espera de um assistente AI — conversar, planejar, executar — mas cada ação é auditável e isolada.",
+        f1_name: "Interface WhatsApp", f1_desc: "Converse naturalmente, execute tarefas, agende ações — pelo app que você já usa.",
+        f2_name: "Planejamento de tarefas", f2_desc: '"Envie um resumo das mensagens de ontem para Juan às 9h" — planos complexos multi-etapa.',
+        f3_name: "Operações de arquivos", f3_desc: "Ler, escrever, buscar — isolado em diretórios seguros com validação de caminhos.",
+        f4_name: "Comandos shell", f4_desc: "Allowlist de 40 comandos com sandbox Docker opcional. Sem execução arbitrária.",
+        f5_name: "Transcrição de voz", f5_desc: "Envie áudio, receba texto — e execução automática de tarefas por comandos de voz.",
+        f6_name: "Tarefas agendadas", f6_desc: "Estilo cron ou delays únicos. Configure e esqueça.",
+        f7_name: "Web Fetch", f7_desc: "Com proteção SSRF e bloqueio de IPs privados integrado.",
+        f8_name: "Log de auditoria completo", f8_desc: "Cada ação, cada decisão, cada verificação de política — registrado e consultável.",
+        qs_title: "Funcionando em 2 minutos", qs_desc: "Node.js 20+, Python 3.12+, e uma API key da Anthropic.",
+        term_clone: "# Clonar e instalar", term_config: "# Configurar", term_launch: "# Lançar",
+        term_t1: "# Terminal 1: camada de segurança", term_t2: "# Terminal 2: escaneie QR → pronto",
+        term_docker: "# Escaneie QR dos logs do container",
+        footer_quote: "Construído por alguém que roda agentes em produção de broadcast ao vivo — onde um falso positivo significa ar morto e uma vulnerabilidade real significa que outro controla seu sinal."
+      },
+      fr: {
+        nav_arch: "Architecture", nav_defense: "Défense", nav_vs: "vs OpenClaw", nav_start: "Démarrage rapide",
+        hero_tag: "Open Source · Licence MIT",
+        hero_title: 'La sécurité est<br><span class="highlight">l\'architecture.</span>',
+        hero_sub: "FortBot est un agent AI personnel pour WhatsApp construit de zéro avec une sécurité zero-trust — pas ajoutée après coup. Construit en réponse à l'architecture d'OpenClaw.",
+        stat_tests: "Tests réussis", stat_vulns: "Vulns corrigées", stat_layers: "Couches de défense", stat_trust: "Confiance par défaut",
+        arch_title: 'Le problème de donner à un LLM<br>un accès shell sans limites',
+        arch_desc: "OpenClaw a prouvé une demande massive d'agents AI. Il a aussi prouvé ce qui arrive quand la sécurité est un ajout tardif — 6 CVEs, 21 000+ instances sur Shodan, 341+ skills malveillants.",
+        arch_untrusted: "données non fiables", arch_execution: "exécution", arch_nobounds: "sans limites",
+        arch_owner: "owner uniquement → plans", arch_determ: "validation déterministe", arch_sandbox: "outils isolés", arch_quarantine: "données non fiables, sans outils",
+        defense_label: "Défense en profondeur",
+        defense_title: '7 couches entre le monde<br>et votre machine',
+        defense_desc: "Chaque message, chaque action, chaque flux de données passe par une validation déterministe avant toute exécution.",
+        l1_name: "Classification de confiance", l1_desc: "Chaque message est étiqueté : OWNER → KNOWN → UNKNOWN → UNTRUSTED. Les permissions se propagent en cascade.",
+        l2_name: "LLM Privilégié / Quarantaine", l2_desc: "Le planificateur ne voit jamais les données non fiables. Le LLM en quarantaine traite les entrées externes sans accès aux outils.",
+        l3_name: "Suivi de contamination", l3_desc: "Les données portent des étiquettes d'origine. Les valeurs contaminées ne peuvent pas atteindre les actions sensibles.",
+        l4_name: "Moteur de politiques", l4_desc: "Des règles déterministes détectent les patterns dangereux avant l'exécution. Sans jugement LLM — logique pure.",
+        l5_desc: "Processus Python séparé fournissant un second avis sémantique sur les actions sensibles. Fail-closed par design.",
+        l6_name: "Sandbox de l'exécuteur", l6_desc: "Allowlist de 40 commandes, restrictions de chemins, isolation Docker, timeout de plans avec rollback automatique.",
+        l7_name: "Chiffrement au repos", l7_desc: "AES-256-GCM pour la base de messages et le vault de credentials. Pas de secrets en clair, jamais.",
+        cve_label: "Audit de sécurité", cve_title: "vs CVEs d'OpenClaw",
+        cve_desc: "Comparaison directe avec les vulnérabilités connues de l'écosystème.",
+        th_vuln: "Vulnérabilité",
+        cve_cmdinj: "CVE-2026-25157 — Injection de commandes", cve_prompt: "CVE-2026-22708 — Injection de prompts",
+        cve_localhost: "Bypass d'auto-approbation localhost", cve_heartbeat: "Heartbeat fetch d'URLs arbitraires",
+        cve_plaintext: "Credentials en clair", cve_skills: "341+ skills malveillants",
+        patched_late: "Corrigé en retard", patched: "Corrigé", unresolved: "Non résolu",
+        llm_sep: "Séparation LLM", no_panel: "N/A — pas de panel web", still_exists: "Existe encore",
+        no_heartbeat: "Pas de heartbeat", still_plain: "Toujours en clair", no_verif: "Pas de vérification", no_plugin: "Pas de système de plugins",
+        feat_label: "Capacités", feat_title: "Ce qu'il fait",
+        feat_desc: "Tout ce que vous attendez d'un assistant AI — discuter, planifier, exécuter — mais chaque action est auditable et isolée.",
+        f1_name: "Interface WhatsApp", f1_desc: "Discutez naturellement, exécutez des tâches, programmez des actions — via l'app que vous utilisez déjà.",
+        f2_name: "Planification de tâches", f2_desc: '"Envoyez un résumé des messages d\'hier à Juan à 9h" — plans complexes multi-étapes.',
+        f3_name: "Opérations de fichiers", f3_desc: "Lire, écrire, chercher — isolé dans des répertoires sûrs avec validation de chemins.",
+        f4_name: "Commandes shell", f4_desc: "Allowlist de 40 commandes avec sandbox Docker optionnel. Pas d'exécution arbitraire.",
+        f5_name: "Transcription vocale", f5_desc: "Envoyez de l'audio, recevez du texte — et exécution automatique de tâches par commandes vocales.",
+        f6_name: "Tâches programmées", f6_desc: "Style cron ou délais uniques. Configurez et oubliez.",
+        f7_name: "Web Fetch", f7_desc: "Avec protection SSRF et blocage d'IPs privées intégré.",
+        f8_name: "Journal d'audit complet", f8_desc: "Chaque action, chaque décision, chaque vérification de politique — enregistré et consultable.",
+        qs_title: "Opérationnel en 2 minutes", qs_desc: "Node.js 20+, Python 3.12+, et une clé API Anthropic.",
+        term_clone: "# Cloner et installer", term_config: "# Configurer", term_launch: "# Lancer",
+        term_t1: "# Terminal 1 : couche de sécurité", term_t2: "# Terminal 2 : scannez QR → prêt",
+        term_docker: "# Scannez QR depuis les logs du conteneur",
+        footer_quote: "Construit par quelqu'un qui fait tourner des agents en production broadcast live — où un faux positif signifie antenne morte et une vraie vulnérabilité signifie que quelqu'un d'autre contrôle votre signal."
+      }
+    };
+
+    let currentLang = 'en';
+
+    function setLang(lang) {
+      currentLang = lang;
+      document.documentElement.lang = lang;
+      document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+      document.querySelector(`.lang-btn[onclick="setLang('${lang}')"]`).classList.add('active');
+
+      const t = i18n[lang];
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (t[key] !== undefined) el.textContent = t[key];
+      });
+      document.querySelectorAll('[data-i18n-html]').forEach(el => {
+        const key = el.getAttribute('data-i18n-html');
+        if (t[key] !== undefined) el.innerHTML = t[key];
+      });
+    }
+
+    // Scroll reveal
     const obs = new IntersectionObserver(es => {
       es.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
     }, { threshold: 0.08, rootMargin: '0px 0px -50px 0px' });
     document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+    // Auto-detect browser language
+    const browserLang = (navigator.language || '').slice(0, 2).toLowerCase();
+    if (i18n[browserLang]) setLang(browserLang);
   </script>
 </body>
 </html>
