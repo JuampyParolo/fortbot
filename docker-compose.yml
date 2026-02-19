@@ -1,0 +1,50 @@
+version: "3.8"
+
+services:
+  # ── FortBot (TypeScript core) ──────────────
+  fortbot:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: fortbot
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      - FORTBOT_GATEWAY=whatsapp
+      - GUARDIAN_URL=http://guardian:18790
+    volumes:
+      - ./data:/app/data
+      - ./auth_store:/app/auth_store   # WhatsApp session persistence
+      - fortbot-db:/app/db
+    depends_on:
+      guardian:
+        condition: service_healthy
+    networks:
+      - fortbot-net
+
+  # ── Guardian (Python security layer) ───────
+  guardian:
+    build:
+      context: .
+      dockerfile: Dockerfile.guardian
+    container_name: fortbot-guardian
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      - GUARDIAN_HOST=0.0.0.0
+      - GUARDIAN_PORT=18790
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:18790/health')"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
+    networks:
+      - fortbot-net
+
+volumes:
+  fortbot-db:
+
+networks:
+  fortbot-net:
+    driver: bridge

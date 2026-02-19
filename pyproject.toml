@@ -1,0 +1,9 @@
+[project]
+name = "fortbot"
+version = "0.1.0"
+description = "Security-first AI agent — Guardian + Credential Vault"
+requires-python = ">=3.11"
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]

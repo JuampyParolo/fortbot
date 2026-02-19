@@ -1,0 +1,41 @@
+node_modules/
+dist/
+.env
+auth_store/
+*.db
+*.db-wal
+*.db-shm
+audit.log
+audit.jsonl
+
+# Security - never commit these
+*.pem
+*.key
+vault_key
+CRASH.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Data
+data/
+/tmp/fortbot/
+HEARTBEAT.md
+
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+*.egg-info/
+
+# Temp
+.voice_tmp/
+*.wav
+*.ogg

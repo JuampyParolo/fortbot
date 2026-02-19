@@ -1,0 +1,37 @@
+{
+  "name": "fortbot",
+  "version": "0.4.0",
+  "description": "Secure AI Agent over WhatsApp — CaMeL + FIDES security, dual LLM, taint tracking, human emulation. Powered by Claude Max",
+  "type": "module",
+  "main": "dist/main.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/main.js",
+    "dev": "tsx src/main.ts",
+    "clean": "rm -rf dist",
+    "test": "tsx tests/test.ts && python3 -m pytest tests/ -q",
+    "test:ts": "tsx tests/test.ts",
+    "test:py": "python3 -m pytest tests/ -q",
+    "test:integration": "tsx tests/integration.ts",
+    "test:all": "npm run test && npm run test:integration",
+    "typecheck": "tsc --noEmit",
+    "guardian": "python3 -m core.api",
+    "login": "claude login",
+    "check": "tsx src/doctor.ts"
+  },
+  "dependencies": {
+    "@whiskeysockets/baileys": "^6.7.16",
+    "dotenv": "^16.4.7",
+    "sql.js": "^1.14.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.19.11",
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.0"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "author": "Juampy × Claude",
+  "license": "MIT"
+}

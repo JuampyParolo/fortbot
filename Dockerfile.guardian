@@ -1,0 +1,24 @@
+FROM python:3.12-slim
+
+WORKDIR /app
+
+# Install deps
+COPY requirements.txt ./
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy source
+COPY guardian/ guardian/
+COPY core/ core/
+COPY vault/ vault/
+
+# Create data dir
+RUN mkdir -p data
+
+# Non-root user
+RUN groupadd -r guardian && useradd -r -g guardian guardian \
+    && chown -R guardian:guardian /app
+USER guardian
+
+EXPOSE 18790
+
+CMD ["python3", "-m", "core.api"]
